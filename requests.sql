@@ -137,3 +137,126 @@ SELECT nom_aut, COUNT(*) AS nombre_homonymes
 FROM auteurs
 GROUP BY nom_aut
 HAVING COUNT(*) > 1;
+
+-- NEW QUESTION
+
+-- Question 21 :
+
+SELECT NumCde
+FROM COMMANDES
+WHERE DateCde = '2020-02-20';
+
+-- Question 22 :
+
+SELECT P.RefProd, P.Prix, C.Qte
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd;
+
+-- Question 23 :
+
+SELECT RefProd, Designation, Prix, Stock
+FROM PRODUITS
+WHERE Prix > 15 AND Stock < 5;
+
+-- Question 24 :
+
+SELECT DISTINCT Cl.NomCli, Cl.PrenomCli
+FROM CLIENTS Cl
+JOIN COMMANDES C ON Cl.NumCli = C.NumCli
+WHERE C.DateCde BETWEEN '2020-02-01' AND '2020-02-29';
+
+-- Question 25 :
+
+SELECT P.RefProd
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+JOIN COMMANDES Co ON Co.NumCde = C.NumCde
+JOIN CLIENTS Cl ON Co.NumCli = Cl.NumCli
+WHERE Cl.NomCli = 'Bydull';
+
+-- Question 26 :
+
+SELECT P.Designation, P.Prix
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+JOIN COMMANDES Co ON Co.NumCde = C.NumCde
+JOIN CLIENTS Cl ON Co.NumCli = Cl.NumCli
+WHERE Cl.VilleCli IN ('Caen', 'Lisieux', 'Bayeux');
+
+-- Question 27 :
+
+SELECT DISTINCT P.RefProd
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+JOIN COMMANDES Co ON Co.NumCde = C.NumCde
+JOIN CLIENTS Cl ON Co.NumCli = Cl.NumCli
+WHERE Cl.NomCli NOT LIKE 'T%' AND Co.DateCde = '2020-02-15';
+
+-- Question 28 :
+
+SELECT DISTINCT Cl.NomCli, Cl.PrenomCli
+FROM CLIENTS Cl
+JOIN COMMANDES C ON Cl.NumCli = C.NumCli
+WHERE C.DateCde BETWEEN '2020-02-01' AND '2020-02-29'
+ORDER BY Cl.NomCli;
+
+-- Question 29 :
+
+SELECT RefProd, Designation, Prix, Stock
+FROM PRODUITS
+WHERE Prix > 15 AND Stock < 5
+ORDER BY Designation ASC, Stock DESC;
+
+-- Question 30 :
+
+SELECT COUNT(*)
+FROM PRODUITS;
+
+-- Question 31 :
+
+SELECT AVG(P.Prix)
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+WHERE C.NumCde = 158;
+
+-- Question 32 :
+
+SELECT DISTINCT RefProd, Designation, Prix, Stock
+FROM PRODUITS
+WHERE Prix > 15 AND Stock < 5;
+
+-- Question 33 :
+
+SELECT SUM(P.Prix * C.Qte) AS MontantTotal
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+WHERE C.NumCde = 158;
+
+-- Question 34 :
+
+SELECT COUNT(*)
+FROM COMMANDES Co
+JOIN CLIENTS Cl ON Co.NumCli = Cl.NumCli
+WHERE Cl.NomCli = 'Dupont' AND Cl.VilleCli = 'Cherbourg';
+
+-- Question 35 :
+
+SELECT SUM(P.Prix * C.Qte) AS MontantTotal
+FROM PRODUITS P
+JOIN COMPORTER C ON P.RefProd = C.RefProd
+JOIN COMMANDES Co ON Co.NumCde = C.NumCde
+JOIN CLIENTS Cl ON Co.NumCli = Cl.NumCli
+WHERE Cl.NomCli = 'Dupont' AND Cl.VilleCli = 'Cherbourg';
+
+-- Question 36 :
+
+SELECT Cl.NumCli, Cl.NomCli, Cl.PrenomCli, COUNT(Co.NumCde) AS NbCommandes
+FROM CLIENTS Cl
+JOIN COMMANDES Co ON Cl.NumCli = Co.NumCli
+WHERE Cl.VilleCli = 'Cherbourg' AND Co.DateCde BETWEEN '2020-01-01' AND '2020-01-31'
+GROUP BY Cl.NumCli, Cl.NomCli, Cl.PrenomCli;
+
+-- Question 37 :
+
+SELECT MIN(DateCde)
+FROM COMMANDES;
