@@ -260,3 +260,97 @@ GROUP BY Cl.NumCli, Cl.NomCli, Cl.PrenomCli;
 
 SELECT MIN(DateCde)
 FROM COMMANDES;
+
+-- New question :
+
+-- Question 38 (7) :
+
+SELECT Salarie.nom, Salarie.prenom
+FROM Salarie, Obtenir
+WHERE Salarie.matricule = Obtenir.matriculeSalarie
+AND Obtenir.numCertification = "CCDP"
+AND dateObtention = #15/03/2019#;
+
+-- Question 39 (8) :
+
+SELECT Emploi.intitule
+FROM Emploi, Salarie, Preparer, Examen
+WHERE Emploi.code = Salarie.codeEmploi
+AND Salarie.matricule = Preparer.matriculeSalarie
+AND Preparer.refExamen = Examen.ref
+AND dateExamen BETWEEN #01/04/2019# AND #30/04/2019#;
+
+-- Question 40 (9) :
+
+SELECT Salarie.nom, Salarie.prenom, Examen.intitule
+FROM Salarie, Preparer, Examen
+WHERE Salarie.matricule = Preparer.matriculeSalarie
+AND Preparer.resultat = "O"
+AND dateExamen BETWEEN #01/01/2018# AND #31/12/2018#;
+
+-- Numéros des certifications obtenues le 14 mars 2019 :
+
+SELECT numCertification
+FROM Obtenir
+WHERE dateObtention = #14/03/2019#;
+
+-- Matricules et noms des salariés ayant obtenu une certification le 15 avril 2019 :
+
+SELECT Salarie.matricule, Salarie.nom
+FROM Salarie, Obtenir
+WHERE Salarie.matricule = Obtenir.matriculeSalarie
+AND dateObtention = #15/04/2019#;
+
+-- Code de l’emploi des salariés ayant réussi un examen en avril 2019 :
+
+SELECT Salarie.codeEmploi
+FROM Salarie, Preparer
+WHERE Salarie.matricule = Preparer.matriculeSalarie
+AND resultat = "O"
+AND dateExamen BETWEEN #01/04/2019# AND #30/04/2019#;
+
+-- Références et intitulés des examens préparés par le salarié nommé "Machin" :
+
+SELECT Examen.ref, Examen.intitule
+FROM Examen, Preparer, Salarie
+WHERE Salarie.nom = "Machin"
+AND Salarie.matricule = Preparer.matriculeSalarie
+AND Examen.ref = Preparer.refExamen;
+
+-- Matricules, noms et prénoms des salariés dont le code de l’emploi commence par la lettre C :
+
+SELECT matricule, nom, prenom
+FROM Salarie
+WHERE codeEmploi LIKE "C%";
+
+-- Nombre de salariés dans l’entreprise SQLY :
+
+SELECT COUNT(*)
+FROM Salarie;
+
+-- Nombre de salariés dont l’emploi a pour code COM :
+
+SELECT COUNT(*)
+FROM Salarie
+WHERE codeEmploi = "COM";
+
+-- Code de chaque emploi avec le nombre de salariés correspondants :
+
+SELECT codeEmploi, COUNT(*)
+FROM Salarie
+GROUP BY codeEmploi;
+
+-- Liste des salariés (matricule, nom, prénom, nombre de certifications) ayant obtenu des certifications :
+
+SELECT Salarie.matricule, Salarie.nom, Salarie.prenom, COUNT(Obtenir.numCertification) AS nombreCertifications
+FROM Salarie, Obtenir
+WHERE Salarie.matricule = Obtenir.matriculeSalarie
+GROUP BY Salarie.matricule, Salarie.nom, Salarie.prenom;
+
+-- Liste des salariés (matricule, nom, prénom) ayant obtenu plus de 3 certifications :
+
+SELECT Salarie.matricule, Salarie.nom, Salarie.prenom
+FROM Salarie, Obtenir
+WHERE Salarie.matricule = Obtenir.matriculeSalarie
+GROUP BY Salarie.matricule, Salarie.nom, Salarie.prenom
+HAVING COUNT(Obtenir.numCertification) > 3;
